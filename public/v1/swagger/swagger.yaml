@@ -1,0 +1,2235 @@
+swagger: '2.0'
+info:
+  description: 'For edit api documentations use https://editor.swagger.io/'
+  version: 1.0.0
+  title: Learn Hub API v1
+host: api.learn-hub.loc
+basePath: /v1
+tags:
+  - name: user
+    description: Operations with user
+  - name: settings
+    description: Operations with settings
+  - name: secret-question
+    description: Operations with secret question
+  - name: course
+    description: Operations with course
+  - name: lesson
+    description: Operations with lesson
+  - name: lesson-comments
+    description: Operations with lesson-comments
+  - name: media
+    description: Operations with media
+  - name: organisation
+    description: Operations with organisation
+  - name: site
+    description: Operations with site
+  - name: team
+    description: Operations with team
+  - name: chat
+    description: Operations with chat
+schemes:
+  - http
+paths:
+  '/user/{id}':
+    get:
+      tags:
+        - user
+      summary: Get exist user
+      description: ''
+      operationId: getUser
+      consumes:
+        - application/json
+        - application/xml
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: get User by User ID
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Get User
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  '/user/update':
+    post:
+      tags:
+        - user
+      summary: Update exist user
+      description: ''
+      operationId: updateUser
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      parameters:
+        - in: formData
+          name: first_name
+          description: User First Name
+          required: true
+          type: string
+        - in: formData
+          name: last_name
+          description: User Last Name
+          required: true
+          type: string
+        - in: formData
+          name: email
+          description: User Email
+          required: true
+          type: string
+        - in: formData
+          name: password
+          description: User Password
+          required: true
+          type: string
+        - in: formData
+          name: password_confirmation
+          description: Confirme User Password
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Update User
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  '/user/updateAvatar':
+    post:
+      tags:
+        - user
+      summary: Update User Avatar
+      description: ''
+      operationId: updateUserAvatar
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      parameters:
+        - in: formData
+          name: id
+          description: User Id
+          required: true
+          type: file
+      responses:
+        '200':
+          description: Update User Avatar
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  /login:
+    post:
+      tags:
+        - user
+      summary: Login User
+      description: ''
+      operationId: loginUser
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      parameters:
+        - in: formData
+          name: email
+          description: User Email
+          required: true
+          type: string
+        - in: formData
+          name: password
+          description: User Password
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Store User Create
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  /logout:
+    post:
+      tags:
+        - user
+      summary: Logout User
+      description: ''
+      operationId: logoutUser
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      parameters:
+        - in: formData
+          name: token
+          description: User jwt token
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Logout User
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  /confirm_code:
+    post:
+      tags:
+        - user
+      summary: Confirm User Email
+      description: ''
+      operationId: confirmCodeUserEmail
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      parameters:
+        - in: formData
+          name: confirm_code
+          description: Confirm Code from Email
+          required: true
+          type: string
+        - in: formData
+          name: email
+          description: User Email
+          required: true
+          type: string
+        - in: formData
+          name: nickname
+          description: User Nickname
+          required: true
+          type: string
+        - in: formData
+          name: secret_question
+          description: User Secret Question
+          required: true
+          type: string
+        - in: formData
+          name: secret_answer
+          description: User Secret Answer
+          required: true
+          type: string
+        - in: formData
+          name: password
+          description: User Password
+          required: true
+          type: string
+        - in: formData
+          name: password_confirmation
+          description: Confirm User Password
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Confirm User Email
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  /forgot_password:
+    post:
+      tags:
+        - user
+      summary: Forgot User Password
+      description: ''
+      operationId: forgotUserPassword
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      parameters:
+        - in: formData
+          name: email
+          description: User Email
+          required: true
+          type: string
+        - in: formData
+          name: answer
+          description: Secret Question Answer
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Forgot User Password
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  /forgot_password/question-by-email:
+    get:
+      tags:
+        - user
+      summary: Get Question By Email
+      description: ''
+      operationId: questionByEmail
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      parameters:
+        - in: query
+          name: email
+          description: User Email
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Get Question By Email
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  /reset_password:
+    post:
+      tags:
+        - user
+      summary: Reset User Password
+      description: ''
+      operationId: resetUserPswd
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      parameters:
+        - in: formData
+          name: token
+          description: Reset Token from Email
+          required: true
+          type: string
+        - in: formData
+          name: email
+          description: User Email
+          required: true
+          type: string
+        - in: formData
+          name: password
+          description: New User Password
+          required: true
+          type: string
+        - in: formData
+          name: password_confirmation
+          description: Confirme New User Password
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Reset User Password
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  /system/secret_questions:
+    get:
+      tags:
+        - user
+      summary: System Secret Questions
+      description: ''
+      operationId: SystemSecretQuestions
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      responses:
+        '200':
+          description: System Secret Questions
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  /settings/config:
+    get:
+      tags:
+        - settings
+      summary: get Settings Config
+      description: ''
+      operationId: getSettingsConfig
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      responses:
+        '200':
+          description: get Settings Config
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  /settings/personal_info:
+    get:
+      tags:
+        - settings
+      summary: get Settings Personal Info
+      description: ''
+      operationId: getSettingsPersonalInfo
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      responses:
+        '200':
+          description: get Settings Personal Info
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+    post:
+      tags:
+        - settings
+      summary: post Settings Personal Info
+      description: ''
+      operationId: postSettingsPersonalInfo
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      parameters:
+        - in: formData
+          name: contact_email
+          description: Contact Email
+          required: true
+          type: string
+        - in: formData
+          name: first_name
+          description: First Name
+          required: false
+          type: string
+        - in: formData
+          name: last_name
+          description: Last Name
+          required: false
+          type: string
+        - in: formData
+          name: birthday
+          description: Birthday Date
+          required: false
+          type: string
+        - in: formData
+          name: phone_number
+          description: Phone Number
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Create/Update Settings Personal Info
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  /settings/account_settings:
+    get:
+      tags:
+        - settings
+      summary: get Settings Account Settings
+      description: ''
+      operationId: getSettingsAccountSettings
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      responses:
+        '200':
+          description: get Settings Account Settings
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+    post:
+      tags:
+        - settings
+      summary: post Settings Account Settings
+      description: ''
+      operationId: postSettingsAccountSettings
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      parameters:
+        - in: formData
+          name: email
+          description: Email
+          required: true
+          type: string
+        - in: formData
+          name: name
+          description: Name
+          required: true
+          type: string
+        - in: formData
+          name: phone_number
+          description: Phone Number
+          required: false
+          type: string
+        - in: formData
+          name: state
+          description: State
+          required: false
+          type: string
+        - in: formData
+          name: city
+          description: City
+          required: false
+          type: string
+        - in: formData
+          name: street
+          description: Street
+          required: false
+          type: string
+        - in: formData
+          name: zip
+          description: Zip
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Create/Update Settings Account Settings
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  /settings/change_password:
+    get:
+      tags:
+        - settings
+      summary: get Settings Change Password
+      description: ''
+      operationId: getSettingsChangePassword
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      responses:
+        '200':
+          description: get Settings Change Password
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  '/secret_question/{id}':
+    get:
+      tags:
+        - secret-question
+      summary: Get Secret Question by Id
+      description: ''
+      operationId: getSecretQquestion
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      parameters:
+        - in: path
+          name: id
+          description: Secret Question Id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Get Secret Question by Id
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  /secret_question:
+    get:
+      tags:
+        - secret-question
+      summary: Get List of Secret Questions
+      description: ''
+      operationId: getListSecretQuestions
+      consumes:
+        - application/json
+        - application/xml
+      produces:
+        - application/xml
+        - application/json
+      responses:
+        '200':
+          description: Confirm User Email
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+    post:
+      tags:
+        - secret-question
+      summary: Create User Secret Answer
+      description: ''
+      operationId: userSecretAnswer
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      parameters:
+        - in: formData
+          name: secret_questions_id
+          description: Secret Questions Id
+          required: true
+          type: string
+        - in: formData
+          name: secret_answer
+          description: User Secret Answer
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Create User Secret Answer
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  /secret_question/update:
+    post:
+      tags:
+        - secret-question
+      summary: Update Secret Question
+      description: ''
+      operationId: updateSecretQuestion
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      parameters:
+        - in: formData
+          name: secret_questions_id
+          description: Secret Questions Id
+          required: true
+          type: string
+        - in: formData
+          name: secret_answer
+          description: User Secret Answer
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Update Secret Question
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  '/courses/{id}':
+    delete:
+      tags:
+        - course
+      summary: Delete Course
+      description: ''
+      operationId: deleteCourse
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      parameters:
+        - in: path
+          name: id
+          description: Course Id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Delete Course
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  '/courses/details/{id}':
+    get:
+      tags:
+        - course
+      summary: get Detail Course
+      description: ''
+      operationId: getDetailCourse
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      parameters:
+        - in: path
+          name: id
+          description: Course Id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: get Detail Course
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  '/courses/list':
+    get:
+      tags:
+        - course
+      summary: get Courses List
+      description: ''
+      operationId: getCourseList
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      responses:
+        '200':
+          description: get Course List
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  /courses/create:
+    post:
+      tags:
+        - course
+      summary: Create New Course
+      description: ''
+      operationId: createNewCourse
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      parameters:
+        - in: formData
+          name: name
+          description: Name
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Create New Course
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  '/courses/update_details/{id}':
+    post:
+      tags:
+        - course
+      summary: Update Course
+      description: ''
+      operationId: updateCourse
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      parameters:
+        - in: path
+          name: id
+          description: Course Id
+          required: true
+          type: string
+        - in: formData
+          name: name
+          description: Name
+          required: true
+          type: string
+        - in: formData
+          name: subtitle
+          description: Subtitle
+          required: false
+          type: string
+        - in: formData
+          name: description
+          description: Description
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Update Course
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  '/courses/update_thumbnail/{id}':
+    post:
+      tags:
+        - course
+      summary: Update Course Thumbnail
+      description: ''
+      operationId: updateCourseThumbnail
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      parameters:
+        - in: path
+          name: id
+          description: Course Id
+          required: true
+          type: string
+        - in: formData
+          name: thumbnail
+          description: Thumbnail
+          required: true
+          type: file
+      responses:
+        '200':
+          description: Update Course Thumbnail
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  '/courses/update_featured_background/{id}':
+    post:
+      tags:
+        - course
+      summary: Update Course Featured Background
+      description: ''
+      operationId: updateCourseFeaturedBackground
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      parameters:
+        - in: path
+          name: id
+          description: Course Id
+          required: true
+          type: string
+        - in: formData
+          name: featured_background
+          description: Featured Background
+          required: true
+          type: file
+      responses:
+        '200':
+          description: Update Course Featured Background
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  '/lesson/{id}':
+    delete:
+      tags:
+        - lesson
+      summary: Delete Lesson
+      description: ''
+      operationId: deleteLesson
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      parameters:
+        - in: path
+          name: id
+          description: Lesson Id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Delete Lesson
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+    get:
+      tags:
+        - lesson
+      summary: Get Lesson by Id
+      description: ''
+      operationId: getLesson
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      parameters:
+        - in: path
+          name: id
+          description: Lesson Id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Get Lesson by Id
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  /lesson:
+    get:
+      tags:
+        - lesson
+      summary: Get List of Lessons
+      description: ''
+      operationId: getListLessons
+      consumes:
+        - application/json
+        - application/xml
+      produces:
+        - application/xml
+        - application/json
+      responses:
+        '200':
+          description: Get List of Course
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+    post:
+      tags:
+        - lesson
+      summary: Create New Lesson
+      description: ''
+      operationId: createNewLesson
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      parameters:
+        - in: formData
+          name: course_id
+          description: Course Id
+          required: true
+          type: string
+        - in: formData
+          name: name
+          description: Name
+          required: true
+          type: string
+        - in: formData
+          name: description
+          description: Description
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Create New Lesson
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  '/lesson/update/{id}':
+    post:
+      tags:
+        - lesson
+      summary: Update Lesson
+      description: ''
+      operationId: updateLesson
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      parameters:
+        - in: path
+          name: id
+          description: Lesson Id
+          required: true
+          type: string
+        - in: formData
+          name: course_id
+          description: Course Id
+          required: true
+          type: string
+        - in: formData
+          name: name
+          description: Name
+          required: true
+          type: string
+        - in: formData
+          name: description
+          description: Description
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Update Lesson
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  '/media/{id}':
+    delete:
+      tags:
+        - media
+      summary: Delete Media
+      description: ''
+      operationId: deleteMedia
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      parameters:
+        - in: path
+          name: id
+          description: Media Id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Delete Media
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+    get:
+      tags:
+        - media
+      summary: Get Media by Id
+      description: ''
+      operationId: getMedia
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      parameters:
+        - in: path
+          name: id
+          description: Media Id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Get Media by Id
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  /media:
+    get:
+      tags:
+        - media
+      summary: Get List of Media
+      description: ''
+      operationId: getListMedia
+      consumes:
+        - application/json
+        - application/xml
+      produces:
+        - application/xml
+        - application/json
+      responses:
+        '200':
+          description: Get List of Media
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+    post:
+      tags:
+        - media
+      summary: Create New Media
+      description: ''
+      operationId: createNewMedia
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      parameters:
+        - in: formData
+          name: lesson_id
+          description: Lesson Id
+          required: true
+          type: string
+        - in: formData
+          name: type
+          description: Type
+          required: true
+          type: string
+        - in: formData
+          name: name
+          description: Name
+          required: true
+          type: string
+        - in: formData
+          name: display_name
+          description: Display Name
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Create New Media
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  '/media/update/{id}':
+    post:
+      tags:
+        - media
+      summary: Update Media
+      description: ''
+      operationId: updateMedia
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      parameters:
+        - in: path
+          name: id
+          description: Media Id
+          required: true
+          type: string
+        - in: formData
+          name: lesson_id
+          description: Lesson Id
+          required: true
+          type: string
+        - in: formData
+          name: type
+          description: Type
+          required: true
+          type: string
+        - in: formData
+          name: name
+          description: Name
+          required: true
+          type: string
+        - in: formData
+          name: display_name
+          description: Display Name
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Update Media
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  '/organisation/{id}':
+    get:
+      tags:
+        - organisation
+      summary: Get Organisation by Id
+      description: ''
+      operationId: getOrganisation
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      parameters:
+        - in: path
+          name: id
+          description: Organisation Id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Get Organisation by Id
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  /organisation:
+    get:
+      tags:
+        - organisation
+      summary: Get List of Organisations
+      description: ''
+      operationId: getListOrganisations
+      consumes:
+        - application/json
+        - application/xml
+      produces:
+        - application/xml
+        - application/json
+      responses:
+        '200':
+          description: Get List of Organisation
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  '/organisation/update_cover_picture':
+    post:
+      tags:
+        - organisation
+      summary: Update Organisation Cover Picture
+      description: ''
+      operationId: updateOrganisationCoverPicture
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      parameters:
+        - in: formData
+          name: cover_picture
+          description: Cover Picture
+          required: true
+          type: file
+      responses:
+        '200':
+          description: Update Organisation Cover Picture
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  '/organisation/update_logo':
+    post:
+      tags:
+        - organisation
+      summary: Update Organisation Logo
+      description: ''
+      operationId: updateOrganisationLogo
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      parameters:
+        - in: formData
+          name: logo
+          description: Logo
+          required: true
+          type: file
+      responses:
+        '200':
+          description: Update Organisation Logo
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  /sites/list:
+    get:
+      tags:
+        - site
+      summary: Get List of Sites
+      description: ''
+      operationId: getListSites
+      consumes:
+        - application/json
+        - application/xml
+      produces:
+        - application/xml
+        - application/json
+      responses:
+        '200':
+          description: Get List of Sites
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  '/sites/settings_config/{id}':
+    get:
+      tags:
+        - site
+      summary: Get Site Settings Config
+      description: ''
+      operationId: GetSiteSettingsConfig
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      parameters:
+        - in: path
+          name: id
+          description: Site Id (for api can be empty for new site)
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Get Site Settings Config
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  '/sites/members_config/{id}':
+    get:
+      tags:
+        - site
+      summary: Get Site Members Config
+      description: ''
+      operationId: GetSiteMembersConfig
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      parameters:
+        - in: path
+          name: id
+          description: Site Id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Get Site Members Config
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  '/sites/update/{id}':
+    post:
+      tags:
+        - site
+      summary: Update Site
+      description: ''
+      operationId: updateSite
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      parameters:
+        - in: path
+          name: id
+          description: Site Id (for api can be empty for create site)
+          required: true
+          type: string
+        - in: formData
+          name: site_name
+          description: Site Name
+          required: true
+          type: string
+        - in: formData
+          name: admins
+          description: Admins
+          required: false
+          type: array
+          items: {}
+      responses:
+        '200':
+          description: Update Site
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  '/sites/update_members/{id}':
+    post:
+      tags:
+        - site
+      summary: Update Site Members
+      description: ''
+      operationId: updateSiteMembers
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      parameters:
+        - in: path
+          name: id
+          description: Site Id
+          required: true
+          type: string
+        - in: formData
+          name: members
+          description: Members
+          required: false
+          type: array
+          items: {}
+      responses:
+        '200':
+          description: Update Site Members
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  '/sites/update_logo/{id}':
+    post:
+      tags:
+        - site
+      summary: Update Site Logo
+      description: ''
+      operationId: updateSiteLogo
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      parameters:
+        - in: path
+          name: id
+          description: Site Id
+          required: true
+          type: string
+        - in: formData
+          name: logo
+          description: Logo
+          required: false
+          type: file
+      responses:
+        '200':
+          description: Update Site Logo
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  /teams/list:
+    get:
+      tags:
+        - team
+      summary: Get List of Teams
+      description: ''
+      operationId: getListTeams
+      consumes:
+        - application/json
+        - application/xml
+      produces:
+        - application/xml
+        - application/json
+      responses:
+        '200':
+          description: Get List of Teams
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  '/teams/settings_config/{id}':
+    get:
+      tags:
+        - team
+      summary: Get Team Settings Config
+      description: ''
+      operationId: GetTeamSettingsConfig
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      parameters:
+        - in: path
+          name: id
+          description: Team Id (for api can be empty for new team)
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Get Team Settings Config
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  '/teams/members_config/{id}':
+    get:
+      tags:
+        - team
+      summary: Get Team Members Config
+      description: ''
+      operationId: GetTeamMembersConfig
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      parameters:
+        - in: path
+          name: id
+          description: Team Id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Get Team Members Config
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  '/teams/update/{id}':
+    post:
+      tags:
+        - team
+      summary: Update Team
+      description: ''
+      operationId: updateTeam
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      parameters:
+        - in: path
+          name: id
+          description: Team Id (for api can be empty for create team)
+          required: true
+          type: string
+        - in: formData
+          name: team_name
+          description: Team Name
+          required: true
+          type: string
+        - in: formData
+          name: belongs_to
+          description: Belongs to Site
+          required: false
+          type: string
+        - in: formData
+          name: admins
+          description: Admins
+          required: false
+          type: array
+          items: {}
+      responses:
+        '200':
+          description: Update Team
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  '/teams/renew_settings_config':
+    post:
+      tags:
+        - team
+      summary: Renew Settings Config
+      description: ''
+      operationId: renewSettingsConfig
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      parameters:
+        - in: formData
+          name: team_name
+          description: Team Name
+          required: true
+          type: string
+        - in: formData
+          name: belongs_to
+          description: Belongs to Site
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Renew Settings Config
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  '/teams/update_members/{id}':
+    post:
+      tags:
+        - team
+      summary: Update Team Members
+      description: ''
+      operationId: updateTeamMembers
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      parameters:
+        - in: path
+          name: id
+          description: Team Id
+          required: true
+          type: string
+        - in: formData
+          name: members
+          description: Members
+          required: false
+          type: array
+          items: {}
+      responses:
+        '200':
+          description: Update Team Members
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  '/teams/update_logo/{id}':
+    post:
+      tags:
+        - team
+      summary: Update Team Logo
+      description: ''
+      operationId: updateTeamMembers
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      parameters:
+        - in: path
+          name: id
+          description: Team Id
+          required: true
+          type: string
+        - in: formData
+          name: Logo
+          description: Logo
+          required: true
+          type: file
+      responses:
+        '200':
+          description: Update Team Logo
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  '/chat/{id}':
+    get:
+      tags:
+        - chat
+      summary: Get User Chat by Id
+      description: ''
+      operationId: getUserChat
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      parameters:
+        - in: path
+          name: id
+          description: User Chat Id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Get User Chat by Id
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  /chat:
+    get:
+      tags:
+        - chat
+      summary: Get List of Users Chat
+      description: ''
+      operationId: getListUsersChat
+      consumes:
+        - application/json
+        - application/xml
+      produces:
+        - application/xml
+        - application/json
+      responses:
+        '200':
+          description: Get List of Users Chat
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+    post:
+      tags:
+        - chat
+      summary: Create New User Chat
+      description: ''
+      operationId: createNewUserChat
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      parameters:
+        - in: formData
+          name: user_id
+          description: User Id
+          required: true
+          type: string
+        - in: formData
+          name: chat_id
+          description: Chat Id
+          required: false
+          type: string
+        - in: formData
+          name: message
+          description: Message
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Create New User Chat
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  '/lesson_comments/{id}':
+    delete:
+      tags:
+        - lesson-comments
+      summary: Delete Lesson Comment
+      description: ''
+      operationId: deleteLessonComment
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      parameters:
+        - in: path
+          name: id
+          description: User Lesson Comment Id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Delete Lesson Comment
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+    get:
+      tags:
+        - lesson-comments
+      summary: Get User Lesson Comments
+      description: ''
+      operationId: getLessonComments
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      parameters:
+        - in: path
+          name: id
+          description: Lesson Id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Get User Lesson Comments by Lesson Id
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+  /lesson_comments:
+    post:
+      tags:
+        - lesson-comments
+      summary: Create Lesson Comment
+      description: ''
+      operationId: createLessonComment
+      consumes:
+        - application/json
+        - application/xml
+        - multipart/form-data
+      produces:
+        - application/xml
+        - application/json
+        - multipart/form-data
+      parameters:
+        - in: formData
+          name: lesson_id
+          description: lesson Id
+          required: true
+          type: string
+        - in: formData
+          name: comment
+          description: Comment for Lesson
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Create Lesson Comment
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+        '422':
+          description: Invalid input
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/ApiResponse'
+securityDefinitions:
+  api_key:
+    type: apiKey
+    name: Authorization
+    in: header
+definitions:
+  ApiResponse:
+    type: object
+    properties:
+      success:
+        type: boolean
+      data:
+        type: object
+      errors:
+        type: object
+externalDocs:
+  description: Find out more about Swagger
+  url: 'http://swagger.io'

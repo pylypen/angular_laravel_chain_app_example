@@ -1,0 +1,21 @@
+<?php
+
+namespace App\Http\Requests\API\v1\Lessons;
+
+use App\Http\Requests\API\v1\BaseRequest;
+use App\Rules\FileExt;
+
+class LessonsUploadMediaRequest extends BaseRequest
+{
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return [
+            'file' => ['required', 'file', new FileExt]
+        ];
+    }
+}

@@ -1,0 +1,154 @@
+<div class="container">
+    <div class="row">
+        <h3>Edit User Details</h3>
+    </div>
+    <div class="row">
+        <div class="column-md-6 w-50">
+            <form class="user-form">
+                <div class="container-fluid">
+                    <div class="form-group row">
+                        <label for="Nickname" class="col-sm-2 col-form-label">Nickname</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="Nickname" v-model="dataUser.nickname">
+                            <small class="form-text text-danger" v-for="error in dataError.errors">{{ error }}</small>
+                            <small class="form-text text-danger" v-for="error in dataError.nickname">{{ error }}</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="first_name" class="col-sm-2 col-form-label">First name</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="first_name" v-model="dataUser.first_name">
+                            <small class="form-text text-danger" v-for="error in dataError.first_name">{{ error
+                                }}</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="last_name" class="col-sm-2 col-form-label">Last name</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="last_name" v-model="dataUser.last_name">
+                            <small class="form-text text-danger" v-for="error in dataError.last_name">{{ error
+                                }}</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="email" class="col-sm-2 col-form-label">Email</label>
+                        <div class="col-sm-10">
+                            <input type="email" readonly class="form-control" id="email" v-model="dataUser.email">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="contact_email" class="col-sm-2 col-form-label">Contact Email</label>
+                        <div class="col-sm-10">
+                            <input type="email" class="form-control" id="contact_email"
+                                   v-model="dataUser.contact_email">
+                            <small class="form-text text-danger" v-for="error in dataError.contact_email">{{ error
+                                }}</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="phone_number" class="col-sm-2 col-form-label">Phone Number</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="phone_number" v-model="dataUser.phone_number">
+                            <small class="form-text text-danger" v-for="error in dataError.phone_number">{{ error
+                                }}</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="avatar" class="col-sm-2 col-form-label">Avatar</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" readonly v-if="dataUser.avatar != undefined"
+                                   v-model="dataUser.avatar.src">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="avatar" class="col-sm-2 col-form-label">&nbsp;</label>
+                        <div class="col-sm-10">
+                            <input type="file" class="form-control" id="avatar">
+                            <small class="form-text">Dimensions:min width=150px, min height=150px</small>
+                            <small class="form-text text-danger" v-for="error in dataError.avatar">{{ error }}</small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2">Activate Status</div>
+                        <div class="col-8" v-if="!dataUser.confirm_code">
+                            <div class="col">
+                                User activated
+                            </div>
+
+                        </div>
+                        <div class="col" v-else>
+                            Confirm code has been sent
+                        </div>
+
+                        <div v-for="org_info in dataOrg" v-if="org_info.is_owner === 1" >
+                            <div class="form-group row">
+                                <div class="col-3">
+                                    <span class="col-sm-2 col-form-label">On Trial</span>
+                                </div>
+                                <div class="col-5">
+                                    <md-switch v-model="trial_status" class="md-primary"></md-switch>
+                                </div>
+                            </div>
+                            <div class="form-group row" v-if="trial_status">
+                                <div class="col-3">
+                                    <span class="col-sm-2 ">Trial end date</span>
+                                </div>
+                                <div class="col-8">
+                                    <md-datepicker v-model="trial_ends_at" >
+                                        <label>Select date</label>
+                                    </md-datepicker>
+                                    <div v-if="trial_status">
+                                        <small class="form-text text-danger" v-for="error in dataError.trial_ends_at">{{
+                                            error
+                                            }}</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th scope="col">Organisation name</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="org_info in dataOrg" :id="org_info.id">
+                                <td>
+                                    <router-link :to="{ path: 'organisation', query: { orgId: org_info.id }}">
+                                        {{ org_info.name }}
+                                    </router-link>
+                                </td>
+                                <td>
+                                    <label class="container_checkmark">is Admin
+                                        <input type="checkbox" checked="checked" v-model="org_info.is_admin"
+                                               :checked="org_info.is_admin"
+                                               @change="setUser(org_info.id, org_info.organisation.id, 'is_admin', org_info.is_admin)">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td v-if="org_info.can_exit === 1 && dataOrg.length > 1">
+                                    <button @click="deleteUserOrg(org_info.id, dataUser.id)" class="btn btn-danger">
+                                        Remove from Organisation
+                                    </button>
+                                </td>
+                                <td v-else>Can't be removed</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <small class="form-text text-danger mb-3" v-if="dataErrorDelete.length != undefined">{{
+                        dataErrorDelete }}</small>
+
+                    <button class="btn btn-primary btn-lg" @click="updateUser()" type="button">Save</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="column-md-6"></div>
+    </div>
+
+</div>

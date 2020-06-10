@@ -1,0 +1,9 @@
+actor: ApiTester
+modules:
+    enabled:
+        - Laravel5:
+            environment_file: .env.testing
+        - REST:
+            url: http://api.church-learn.loc/v1
+            depends: Laravel5
+            part: json

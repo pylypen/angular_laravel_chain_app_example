@@ -1,0 +1,111 @@
+<div class="container">
+    <div class="row">
+        <h3>{{orgDet.name}}</h3>
+    </div>
+
+    <div class="row"><h4><strong>Org Information</strong></h4>
+        <hr/>
+    </div>
+    <div class="row">
+        <div class="column-md-6 w-40">
+                <div class="row">
+                    <h4 class="col-sm-2 font-weight-bold">Email:</h4>
+                    <div class="col-sm-8 ">
+                        <p>{{orgDet.email}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <h4 class="col-sm-2 font-weight-bold">Name:</h4>
+                    <div class="col-sm-8">
+                        <p>{{orgDet.name}}</p>
+                    </div>
+                </div>
+                <div class="row ">
+                    <h4 class="col-sm-2 font-weight-bold">Phone Number:</h4>
+                    <div class="col-sm-8 ">
+                        <p>{{orgDet.phone_number}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <h4 class="col-sm-2 font-weight-bold">Street:</h4>
+                    <div class="col-sm-8">
+                        <p>{{orgDet.street}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <h4 class="col-sm-2 font-weight-bold">City:</h4>
+                    <div class="col-sm-10">
+                        <p>{{orgDet.city}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <h4 class="col-sm-2 font-weight-bold">State:</h4>
+                    <div class="col-sm-10">
+                        <p>{{orgDet.state}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <h4 class="col-sm-2 font-weight-bold">Zip:</h4>
+                    <div class="col-sm-10">
+                        <p>{{orgDet.zip}}</p>
+                    </div>
+                </div>
+
+        </div>
+    </div>
+
+    <div class="row"><h4><strong>Features Configuration</strong></h4>
+        <hr/>
+    </div>
+    <div class="row">
+
+    <div class="row"><h4><strong>Customization</strong></h4>
+        <hr/>
+    </div>
+    <div class="row">
+        <div class="column-md-6 w-40">
+            <div class="row">
+                <h4 class="col-sm-2 font-weight-bold">Logo:</h4>
+                <div class="col-sm-10" v-if="orgDet.logo != undefined">
+                    <img style="max-width: 100px" v-bind:src="orgDet.logo.src">
+                </div>
+                <div class="col-sm-10" v-else>
+                    <p>Logo is missing</p>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <h4 class="col-sm-2 font-weight-bold">Cover Picture:</h4>
+                <div class="col-sm-10" v-if="orgDet.cover_picture != undefined">
+                    <img style="max-width: 100px" v-bind:src="orgDet.cover_picture.src">
+                </div>
+                <div class="col-sm-10" v-else>
+                    <p>Cover picture is missing</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row"><h4><strong>Org Users</strong></h4>
+        <hr/>
+    </div>
+    <div class="row">
+        <md-table v-model="usersOrg" md-sort="name" md-sort-order="asc" md-card md-fixed-header>
+            <md-table-toolbar>
+                <h1 class="md-title">{{orgDet.name}} Users</h1>
+            </md-table-toolbar>
+
+            <md-table-row slot="md-table-row" v-for="(item,index) of usersOrg">
+                <md-table-cell md-label="First name" md-sort-by="first_name">{{ item.nickname }}</md-table-cell>
+                <md-table-cell md-label="Last name" md-sort-by="last_name">{{ item.last_name }}</md-table-cell>
+                <md-table-cell md-label="Nickname" md-sort-by="nickname">{{ item.nickname }}</md-table-cell>
+                <md-table-cell md-label="Email" md-sort-by="email">{{ item.email }}</md-table-cell>
+                <md-table-cell md-label="Is owner">
+                    <input type="radio" name="owner" v-model="item.is_owner"
+                           :checked="item.is_owner === 1 ? true : false" :value="1"
+                           @change="change_owner(item)"/>
+                </md-table-cell>
+            </md-table-row>
+        </md-table>
+    </div>
+
+</div>

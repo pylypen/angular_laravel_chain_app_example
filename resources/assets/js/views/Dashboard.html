@@ -1,0 +1,317 @@
+<div id="list-form" class="container">
+    <div class="row pb-5">
+        <h3>Dashboard</h3>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <h5>Menu</h5>
+            <b-nav vertical class="w-80">
+                <b-nav-item id="organisations" @click="organisationsfetchItems()">Organizations</b-nav-item>
+                <b-nav-item id="users" @click="usersfetchItems()">Users</b-nav-item>
+                <b-nav-item id="cms_admins" @click="usersAdminsfetchItems()">CMS Admins</b-nav-item>
+            </b-nav>
+        </div>
+        <div class="col-md-10">
+            <!-- Org List -->
+            <div class="container table-responsive" id="organisationsList">
+                <b-container>
+                    <b-row>
+                        <b-col cols="6"><h4>Organizations</h4></b-col>
+                        <input type="text" v-if="path == 'organisation'"
+                               @input="organisationsfetchItems('1',$event.target.value)">
+                        <b-col class="text-right">
+                            <button type="button" class="btn btn-success btn-lg mr-5" @click="csvOrgExport()"
+                                    v-if="path == 'organisation'">
+                                Get CSV
+                            </button>
+                            <button type="button" @click="clearModalError()" class="btn btn-success btn-lg"
+                                    data-toggle="modal" data-target="#newOrganisation">
+                                Add Organization
+                            </button>
+                        </b-col>
+                    </b-row>
+                </b-container>
+                <div class="row">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                        <tr>
+                            <th scope="col">Org Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Phone Number</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="list in orgList">
+                            <td>{{ list.name}}</td>
+                            <td>{{ list.email}}</td>
+                            <td>{{ list.phone_number }}</td>
+                            <td>
+                                <router-link :to="{ path: path, query: { orgId: list.id }}">Edit</router-link>
+                            </td>
+                            <td>
+                                <router-link :to="{ path: details_path, query: { orgId: list.id }}">Details
+                                </router-link>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <pagination :data="pag" :limit=2 v-on:pagination-change-page="organisationsfetchItems"></pagination>
+                </div>
+            </div>
+            <!-- User List -->
+            <div class="container hidden table-responsive" id="usersList">
+                <b-container>
+                    <b-row>
+                        <b-col cols="6"><h4>Users</h4></b-col>
+                        <input class="mr-5" type="text" v-if="path == 'user'"
+                               @input="usersfetchItems('1',$event.target.value)">
+                        <button type="button" class="btn btn-success btn-lg" @click="csvUsersExport()"
+                                v-if="path == 'user'">
+                            Get CSV
+                        </button>
+                        <b-col class="text-right">
+                            <button type="button" @click="clearModalError()" class="btn btn-success btn-lg"
+                                    data-toggle="modal" data-target="#newUser" v-if="path == 'user'">
+                                Add User
+                            </button>
+                            <button type="button" @click="clearModalError()" class="btn btn-success btn-lg"
+                                    data-toggle="modal" data-target="#newAdmin" v-else>
+                                Add CMS Admin
+                            </button>
+                        </b-col>
+                    </b-row>
+                </b-container>
+                <div class="row">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                        <tr>
+                            <th scope="col">First name</th>
+                            <th scope="col">Last name</th>
+                            <th scope="col">Org Affiliation</th>
+                            <th scope="col">Nickname</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Trial</th>
+                            <th scope="col">Trial Days Remaining</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="list in lists">
+                            <td>{{ list.first_name}}</td>
+                            <td>{{ list.last_name}}</td>
+                            <td>
+                                    <span>
+                                        <router-link :to="{ path: 'organisation', query: { orgId: list.org_id }}">
+                                            {{ list.org_name }}
+                                        </router-link>
+                                    </span>
+                            </td>
+                            <td>{{ list.nickname }}</td>
+                            <td>{{ list.email }}</td>
+                            <td v-if="list.trial_remaining != null && list.trial_remaining !== 0">Yes</td>
+                            <td v-else>No</td>
+                            <td v-if="list.trial_remaining != null && list.trial_remaining !== 0">
+                                {{list.trial_remaining}}
+                            </td>
+                            <td v-else>N/A</td>
+                            <td>
+                                <router-link :to="{ path: path, query: { userId: list.id }}">Edit</router-link>
+                            </td>
+                            <td>
+                                <button class="btn btn-danger" data-toggle="modal" data-target="#deleteUser"
+                                        v-if="path == 'user'"
+                                        @click="setdeleteUserId(list.id, list.first_name+' '+list.last_name)">
+                                    Delete
+                                </button>
+                            </td>
+                            <td>
+                                <button class="btn btn-primary" @click="UserGenareteNewPass( list.id )"
+                                        v-if="path == 'user'">New Pass
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <pagination :data="pag" :limit=2 v-on:pagination-change-page="usersfetchItems"></pagination>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Organisation -->
+    <div class="modal fade" id="newOrganisation" tabindex="-1" role="dialog" aria-labelledby="newOrganisationLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="newOrganisationLabel">Add Organization</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class="user-form">
+                        <div class="container-fluid">
+                            <div class="form-group">
+                                <label for="org_email" class="col-form-label">Organization Email</label>
+                                <input type="email" class="form-control" id="org_email" v-model="addOrg.org_email">
+                                <small class="form-text text-danger" v-for="error in addOrgError.org_email">{{ error
+                                    }}</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="org_name" class="col-form-label">Organization name</label>
+                                <input type="text" class="form-control" id="org_name" v-model="addOrg.org_name">
+                                <small class="form-text text-danger" v-for="error in addOrgError.org_name">{{ error
+                                    }}</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="user_email" class="col-form-label">User Email</label>
+                                <input type="text" class="form-control" id="user_email" v-model="addOrg.user_email">
+                                <small class="form-text text-danger" v-for="error in addOrgError.user_email">{{ error
+                                    }}</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="user_contact_email" class="col-form-label">User Contact Email</label>
+                                <input type="text" class="form-control" id="user_contact_email"
+                                       v-model="addOrg.user_contact_email">
+                                <small class="form-text text-danger" v-for="error in addOrgError.user_contact_email">{{
+                                    error }}</small>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary btn-lg" @click="createOrganisation()">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Admin -->
+    <div class="modal fade" id="newAdmin" tabindex="-1" role="dialog" aria-labelledby="newUserLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="newAdminLabel">Add CMS Admin</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class="user-form">
+                        <div class="container-fluid">
+                            <div class="form-group">
+                                <label for="email" class="col-form-label">User Email</label>
+                                <input type="email" class="form-control" id="email" v-model="addUser.email">
+                                <small class="form-text text-danger" v-for="error in addUserError.email">{{ error
+                                    }}</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="contact_email" class="col-form-label">Contact Email</label>
+                                <input type="text" class="form-control" id="contact_email"
+                                       v-model="addUser.contact_email">
+                                <small class="form-text text-danger" v-for="error in addUserError.contact_email">{{
+                                    error }}</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="first_name" class="col-form-label">First Name</label>
+                                <input type="text" class="form-control" id="first_name" v-model="addUser.first_name">
+                                <small class="form-text text-danger" v-for="error in addUserError.first_name">{{ error
+                                    }}</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="last_name" class="col-form-label">Last Name</label>
+                                <input type="text" class="form-control" id="last_name" v-model="addUser.last_name">
+                                <small class="form-text text-danger" v-for="error in addUserError.last_name">{{ error
+                                    }}</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="password" class="col-form-label">Password</label>
+                                <input type="password" class="form-control" id="password" v-model="addUser.password">
+                                <small class="form-text text-danger" v-for="error in addUserError.password">{{ error
+                                    }}</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="password_confirmation" class="col-form-label">Password Confirmation</label>
+                                <input type="password" class="form-control" id="password_confirmation"
+                                       v-model="addUser.password_confirmation">
+                                <small class="form-text text-danger"
+                                       v-for="error in addUserError.password_confirmation">{{ error }}</small>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary btn-lg" @click="createUserAdmin()">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal User -->
+    <div class="modal fade" id="newUser" tabindex="-1" role="dialog" aria-labelledby="newUserLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="newUserLabel">Add User</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class="user-form">
+                        <div class="container-fluid">
+                            <div class="form-group">
+                                <label for="email" class="col-form-label">User Email</label>
+                                <input type="email" class="form-control" id="email" v-model="addUser.email">
+                                <small class="form-text text-danger" v-for="error in addUserError.email">{{ error
+                                    }}</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="contact_email" class="col-form-label">Contact Email</label>
+                                <input type="text" class="form-control" id="contact_email"
+                                       v-model="addUser.contact_email">
+                                <small class="form-text text-danger" v-for="error in addUserError.contact_email">{{
+                                    error }}</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="organisation" class="col-form-label">Organization</label>
+                                <select id="organisation" class="form-control form-control-lg"
+                                        v-model="addUser.organisation">
+                                    <option v-for="list in orgList" v-bind:value="list.id">{{ list.name }}</option>
+                                </select>
+                                <small class="form-text text-danger" v-for="error in addUserError.organisation">{{ error
+                                    }}</small>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary btn-lg" @click="createUser()">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Delete User -->
+    <div class="modal fade" id="deleteUser" tabindex="-1" role="dialog" aria-labelledby="deleteUserLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title" id="deleteUserLabel">Delete User {{ deleteUserName }}?</h1>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger btn-lg" @click="deleteUser()">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

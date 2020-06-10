@@ -1,0 +1,116 @@
+
+<div class="container">
+    <div class="row">
+        <h3>Edit Organization</h3>
+    </div>
+    <form class="user-form" novalidate>
+
+        <div class="row"><h4>Edit Org Information</h4>
+            <hr/>
+        </div>
+        <div class="row">
+          <div class="column-md-6 w-50">
+                  <div class="container-fluid">
+                      <div class="form-group row">
+                          <label for="email" class="col-sm-2 col-form-label">Email</label>
+                          <div class="col-sm-10">
+                              <input type="text" class="form-control" id="email" v-model="dataOrg.email">
+                              <small class="form-text text-danger" v-for="error in dataOrgError.email">{{ error }}</small>
+                          </div>
+                      </div>
+                      <div class="form-group row">
+                          <label for="name" class="col-sm-2 col-form-label">Name</label>
+                          <div class="col-sm-10">
+                              <input type="text" class="form-control" id="name" v-model="dataOrg.name">
+                              <small class="form-text text-danger" v-for="error in dataOrgError.name">{{ error }}</small>
+                          </div>
+                      </div>
+                      <div class="form-group row">
+                          <label for="phone_number" class="col-sm-2 col-form-label">Phone Number</label>
+                          <div class="col-sm-10">
+                              <input type="text" class="form-control" id="phone_number" v-model="dataOrg.phone_number">
+                              <small class="form-text text-danger" v-for="error in dataOrgError.phone_number">{{ error }}</small>
+                          </div>
+                      </div>
+                      <div class="form-group row">
+                          <label for="street" class="col-sm-2 col-form-label">Street</label>
+                          <div class="col-sm-10">
+                              <input type="text" class="form-control" id="street" v-model="dataOrg.street">
+                              <small class="form-text text-danger" v-for="error in dataOrgError.street">{{ error }}</small>
+                          </div>
+                      </div>
+                      <div class="form-group row">
+                          <label for="city" class="col-sm-2 col-form-label">City</label>
+                          <div class="col-sm-10">
+                              <input type="text" class="form-control" id="city" v-model="dataOrg.city">
+                              <small class="form-text text-danger" v-for="error in dataOrgError.city">{{ error }}</small>
+                          </div>
+                      </div>
+                      <div class="form-group row">
+                          <label for="state" class="col-sm-2 col-form-label">State</label>
+                          <div class="col-sm-10">
+                              <input type="text" class="form-control" id="state" v-model="dataOrg.state">
+                              <small class="form-text text-danger" v-for="error in dataOrgError.state">{{ error }}</small>
+                          </div>
+                      </div>
+
+                      <div class="form-group row">
+                          <label for="zip" class="col-sm-2 col-form-label">Zip</label>
+                          <div class="col-sm-10">
+                              <input type="text" class="form-control" id="zip" v-model="dataOrg.zip">
+                              <small class="form-text text-danger" v-for="error in dataOrgError.zip">{{ error }}</small>
+                          </div>
+                      </div>
+
+                  </div>
+          </div>
+
+        </div> <!-- end info -->
+
+        <div class="row"><h4>Features Configuration</h4>
+            <hr/>
+        </div> <!-- end features -->
+
+        <div class="row"><h4>Customization</h4>
+            <hr/>
+        </div>
+        <div class="row">
+            <div class="column-md-6 w-50">
+
+                <div class="form-group row">
+                    <label for="logo" class="col-sm-2 col-form-label">Logo</label>
+
+                    <div class="col-sm-10" v-if="dataOrg.logo != undefined">
+                        <input type="text" readonly class="form-control" v-model="dataOrg.logo.src">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="logo" class="col-sm-2 col-form-label">&nbsp;</label>
+                    <div class="col-sm-10">
+                        <input type="file" class="form-control" name="logo" id="logo">
+                        <small class="form-text">Dimensions:min width=150px, min height=150px</small>
+                        <small class="form-text text-danger" v-for="error in dataOrgError._logo">{{ error }}</small>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="cover_picture" class="col-sm-2 col-form-label">Cover Picture</label>
+                    <div class="col-sm-10" v-if="dataOrg.cover_picture != undefined">
+                        <input type="text" readonly class="form-control" v-model="dataOrg.cover_picture.src">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="cover_picture" class="col-sm-2 col-form-label">&nbsp;</label>
+                    <div class="col-sm-10">
+                        <input type="file" class="form-control" name="cover_picture" id="cover_picture">
+                        <small class="form-text">Dimensions:min width=1300</small>
+                        <small class="form-text text-danger" v-for="error in dataOrgError._cover_picture">{{ error }}</small>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary btn-lg" @click="saveOrganisation()" type=button>Save</button>
+
+            </div>
+        </div> <!-- end customization -->
+    </form>
+
+</div>
