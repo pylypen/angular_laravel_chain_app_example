@@ -3,7 +3,7 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>ServeHub | Certificate of Completion</title>
+    <title>LearnHub | Certificate of Completion</title>
     <style>
         @page {
             margin: 0;

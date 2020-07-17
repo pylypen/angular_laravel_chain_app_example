@@ -162,7 +162,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         // JWT auth
-        Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
+        Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
         // Model generator
         Krlove\EloquentModelGenerator\Provider\GeneratorServiceProvider::class,
         // phone number validation

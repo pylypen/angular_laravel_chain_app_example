@@ -15,7 +15,6 @@ class TruncateDB extends Seeder
     public function run()
     {
         DB::statement('SET FOREIGN_KEY_CHECKS=0');
-        DB::table('chats')->truncate();
         DB::table('courses')->truncate();
         DB::table('courses_contributors')->truncate();
         DB::table('files')->truncate();
@@ -34,8 +33,6 @@ class TruncateDB extends Seeder
         DB::table('sites')->truncate();
         DB::table('teams')->truncate();
         DB::table('users')->truncate();
-        DB::table('users_chats')->truncate();
-        DB::table('users_chats_messages')->truncate();
         DB::table('users_courses')->truncate();
         DB::table('users_courses_progress')->truncate();
         DB::table('users_organisations')->truncate();

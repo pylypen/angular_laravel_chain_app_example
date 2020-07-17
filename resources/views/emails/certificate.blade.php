@@ -123,7 +123,7 @@
                                         <tbody>
                                         <tr>
                                             <td style="width:200px;">
-+                                                <img height="auto" src="https://app.servehub.io/assets/logos/logo-full-color@2x.png" style="border:0;display:block;outline:none;text-decoration:none;width:100%;" width="100%" />
++                                                <img height="auto" src="https://app.learn_hub.loc/assets/logos/logo-full-color@2x.png" style="border:0;display:block;outline:none;text-decoration:none;width:100%;" width="100%" />
                                             </td>
                                         </tr>
                                         </tbody>
